@@ -1,0 +1,17 @@
+name: msngdata
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - missingno
+  - fancyimpute
+  - xgboost
+  - lightgbm
+  - catboost
+  - imbalanced-learn
+  - statsmodels
