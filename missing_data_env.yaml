@@ -21,3 +21,5 @@ dependencies:
   - pycountry
   - pyarrow
   - rpy2
+  - folium
+  - mapclassify
