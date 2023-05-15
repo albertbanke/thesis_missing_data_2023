@@ -23,3 +23,6 @@ dependencies:
   - rpy2
   - folium
   - mapclassify
+  - mgwr
+  - pysal
+  
