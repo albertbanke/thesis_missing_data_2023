@@ -27,3 +27,4 @@ dependencies:
   - pysal
   - keras
   - tensorflow
+  - mlxtend
