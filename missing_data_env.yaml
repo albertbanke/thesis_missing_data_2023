@@ -25,4 +25,4 @@ dependencies:
   - mapclassify
   - mgwr
   - pysal
-  - fbprophet
+  - keras
