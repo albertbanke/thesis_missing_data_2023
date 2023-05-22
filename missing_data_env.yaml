@@ -28,4 +28,3 @@ dependencies:
   - keras
   - tensorflow
   - mlxtend
-  - eli5
