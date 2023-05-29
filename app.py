@@ -58,6 +58,20 @@ def main():
     # Create a histogram of the selected column for the selected target, data type, and cv method
     fig = px.histogram(selected_df, x='model', color='class_label')
     st.plotly_chart(fig)
+    
+    # Calculate the average macro_f1 score per model
+    avg_macro_f1_per_model = df.groupby('model')['macro_f1'].mean().reset_index()
+
+    # Create a bar plot of average macro_f1 score per model
+    fig_model = px.bar(avg_macro_f1_per_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
+    st.plotly_chart(fig_model)
+
+    # Calculate the average macro_f1 score per data type
+    avg_macro_f1_per_data = df.groupby('data')['macro_f1'].mean().reset_index()
+
+    # Create a bar plot of average macro_f1 score per data type
+    fig_data = px.bar(avg_macro_f1_per_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
+    st.plotly_chart(fig_data)
 
 if __name__ == "__main__":
     main()
