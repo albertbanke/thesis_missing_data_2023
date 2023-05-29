@@ -21,8 +21,14 @@ def main():
 
     # Use a select box for user to select a target to view model results
     st.sidebar.title('Select a target to view model results')
-    select_box = st.sidebar.selectbox('Targets', df['target'].unique().tolist(), index=0)
-    selected_target_df = df[df['target'] == select_box]
+    targets = ['All'] + df['target'].unique().tolist()
+    select_box = st.sidebar.selectbox('Targets', targets, index=0)
+
+    # Filter the DataFrame based on the selected target
+    if select_box == 'All':
+        selected_target_df = df
+    else:
+        selected_target_df = df[df['target'] == select_box]
 
     # Display model results for the selected target
     st.dataframe(selected_target_df)
