@@ -4,11 +4,17 @@ import plotly.express as px
 import glob
 
 # Load your DataFrames
-# (Replace this with the actual code to get your data)
 filenames = glob.glob("results_*.csv")
-df_list = [pd.read_csv(filename) for filename in filenames]
-df = pd.concat(df_list)
+df_list = []
 
+# Read each file, cast 'target' to string, and append to list
+for filename in filenames:
+    df_temp = pd.read_csv(filename)
+    df_temp['target'] = df_temp['target'].astype(str)
+    df_list.append(df_temp)
+
+# Concatenate all the dataframes
+df = pd.concat(df_list)
 def main():
     st.title('My Modeling Results')
 
