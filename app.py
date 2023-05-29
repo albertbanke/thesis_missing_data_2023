@@ -78,7 +78,8 @@ def main():
         st.plotly_chart(fig_model_features)
 
         # Additional code for the second pane (visualization with maps)
-        gdf_nonproc = pd.read_csv("your_spatial_data.csv")
+        # Read the nonprocessed GeoParquet file, this one is premature before added the columns (for original missingness calculations)
+        gdf_nonproc = gpd.read_parquet('gdf_nonproc.parquet')
 
         df_2020 = gdf_nonproc[gdf_nonproc['year'] == 2020]
 
