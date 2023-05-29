@@ -30,11 +30,22 @@ def main():
     else:
         selected_target_df = df[df['target'] == select_box]
 
-    # Display model results for the selected target
-    st.dataframe(selected_target_df)
+    # Use a select box for user to select a data type
+    st.sidebar.title('Select a data type')
+    data_types = ['All'] + df['data'].unique().tolist()
+    data_select_box = st.sidebar.selectbox('Data Types', data_types, index=0)
 
-    # Create a histogram of the selected column for the selected target
-    fig = px.histogram(selected_target_df, x='model', color='class_label')
+    # Filter the DataFrame based on the selected data type
+    if data_select_box == 'All':
+        selected_data_df = selected_target_df
+    else:
+        selected_data_df = selected_target_df[selected_target_df['data'] == data_select_box]
+
+    # Display model results for the selected target and data type
+    st.dataframe(selected_data_df)
+
+    # Create a histogram of the selected column for the selected target and data type
+    fig = px.histogram(selected_data_df, x='model', color='class_label')
     st.plotly_chart(fig)
 
 if __name__ == "__main__":
