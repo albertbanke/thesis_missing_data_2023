@@ -1,0 +1,49 @@
+target,class_label,precision,recall,f1_score,accuracy,macro_f1,cv_method,top1_feature,top2_feature,top3_feature,model,data
+ef_score,0,0.986627043090639,0.9743213499633162,0.9804355850867479,0.9620071684587813,0.6630572987162134,TimeSeriesSplit,ef_money_sd,ef_regulation_business_licensing,ef_gender,RandomForest,spatial
+ef_score,1,0.2857142857142857,0.4375,0.345679012345679,0.9620071684587813,0.6630572987162134,TimeSeriesSplit,ef_money_sd,ef_regulation_business_licensing,ef_gender,RandomForest,spatial
+ef_score,0,0.9939759036144579,0.9684519442406456,0.9810479375696767,0.9634408602150538,0.7329482112090808,TimeSeriesSplit,ef_regulation_business_licensing,ef_money_sd,ef_regulation_credit_ownership,XGBoost,spatial
+ef_score,1,0.3582089552238806,0.75,0.48484848484848486,0.9634408602150538,0.7329482112090808,TimeSeriesSplit,ef_regulation_business_licensing,ef_money_sd,ef_regulation_credit_ownership,XGBoost,spatial
+ef_score,0,0.9984496124031008,0.9449743213499633,0.9709762532981531,0.9448028673835125,0.7044662288388576,TimeSeriesSplit,ef_gender,,,NeuralNetwork,spatial
+ef_score,1,0.2857142857142857,0.9375,0.43795620437956206,0.9448028673835125,0.7044662288388576,TimeSeriesSplit,ef_gender,,,NeuralNetwork,spatial
+hf_score,0,0.986627043090639,0.9743213499633162,0.9804355850867479,0.9620071684587813,0.6630572987162134,TimeSeriesSplit,ef_money_sd,ef_regulation_business_licensing,ef_gender,RandomForest,spatial
+hf_score,1,0.2857142857142857,0.4375,0.345679012345679,0.9620071684587813,0.6630572987162134,TimeSeriesSplit,ef_money_sd,ef_regulation_business_licensing,ef_gender,RandomForest,spatial
+hf_score,0,0.9939759036144579,0.9684519442406456,0.9810479375696767,0.9634408602150538,0.7329482112090808,TimeSeriesSplit,ef_regulation_business_licensing,ef_money_sd,ef_regulation_credit_ownership,XGBoost,spatial
+hf_score,1,0.3582089552238806,0.75,0.48484848484848486,0.9634408602150538,0.7329482112090808,TimeSeriesSplit,ef_regulation_business_licensing,ef_money_sd,ef_regulation_credit_ownership,XGBoost,spatial
+hf_score,0,0.9984496124031008,0.9449743213499633,0.9709762532981531,0.9448028673835125,0.7044662288388576,TimeSeriesSplit,ef_gender,,,NeuralNetwork,spatial
+hf_score,1,0.2857142857142857,0.9375,0.43795620437956206,0.9448028673835125,0.7044662288388576,TimeSeriesSplit,ef_gender,,,NeuralNetwork,spatial
+pf_expression_bti,0,0.8828058169375534,0.9951783992285439,0.9356300997280146,0.8982078853046594,0.8462397073982539,TimeSeriesSplit,x,globalNorth,region_Eastern Europe,RandomForest,spatial
+pf_expression_bti,1,0.9778761061946902,0.61731843575419,0.7568493150684932,0.8982078853046594,0.8462397073982539,TimeSeriesSplit,x,globalNorth,region_Eastern Europe,RandomForest,spatial
+pf_expression_bti,0,0.9357798165137615,0.9836065573770492,0.9590973201692525,0.9376344086021505,0.9139378003561195,TimeSeriesSplit,globalNorth,ef_regulation_labor_conscription,x,XGBoost,spatial
+pf_expression_bti,1,0.9442622950819672,0.8044692737430168,0.8687782805429864,0.9376344086021505,0.9139378003561195,TimeSeriesSplit,globalNorth,ef_regulation_labor_conscription,x,XGBoost,spatial
+pf_expression_bti,0,0.9172794117647058,0.9623915139826422,0.9392941176470587,0.9075268817204301,0.8726545776205219,TimeSeriesSplit,ef_regulation_labor_conscription,,,NeuralNetwork,spatial
+pf_expression_bti,1,0.8729641693811075,0.7486033519553073,0.8060150375939851,0.9075268817204301,0.8726545776205219,TimeSeriesSplit,ef_regulation_labor_conscription,,,NeuralNetwork,spatial
+pf_rol_civil,0,0.8361344537815126,0.20815899581589958,0.3333333333333333,0.42939068100358424,0.4172932330827067,TimeSeriesSplit,ef_regulation_business_start,ef_legal_regulatory,ef_gender,RandomForest,spatial
+pf_rol_civil,1,0.34572169403630076,0.9111617312072893,0.5012531328320802,0.42939068100358424,0.4172932330827067,TimeSeriesSplit,ef_regulation_business_start,ef_legal_regulatory,ef_gender,RandomForest,spatial
+pf_rol_civil,0,0.7641325536062378,0.4100418410041841,0.5336963921034718,0.5089605734767025,0.5075749182319025,TimeSeriesSplit,ef_regulation_business_start,ef_legal_enforcement,y,XGBoost,spatial
+pf_rol_civil,1,0.36054421768707484,0.724373576309795,0.4814534443603331,0.5089605734767025,0.5075749182319025,TimeSeriesSplit,ef_regulation_business_start,ef_legal_enforcement,y,XGBoost,spatial
+pf_rol_civil,0,0.8495887191539365,0.7562761506276151,0.8002213613724405,0.7412186379928315,0.7164891140534633,TimeSeriesSplit,ef_legal_enforcement,,,NeuralNetwork,spatial
+pf_rol_civil,1,0.5716911764705882,0.7084282460136674,0.6327568667344862,0.7412186379928315,0.7164891140534633,TimeSeriesSplit,ef_legal_enforcement,,,NeuralNetwork,spatial
+ef_score,0,0.9011627906976745,0.998389694041868,0.9472880061115356,0.9010752688172043,0.5724812123580933,StratifiedSplit,ef_money_inflation,ef_regulation_business_start,ef_gender,RandomForest,spatial
+ef_score,1,0.8947368421052632,0.1111111111111111,0.19767441860465115,0.9010752688172043,0.5724812123580933,StratifiedSplit,ef_money_inflation,ef_regulation_business_start,ef_gender,RandomForest,spatial
+ef_score,0,0.9278195488721804,0.9935587761674718,0.9595645412130637,0.9254480286738351,0.7412501605147888,StratifiedSplit,ef_gender,ef_money_inflation,y,XGBoost,spatial
+ef_score,1,0.8769230769230769,0.37254901960784315,0.5229357798165137,0.9254480286738351,0.7412501605147888,StratifiedSplit,ef_gender,ef_money_inflation,y,XGBoost,spatial
+ef_score,0,0.9893092105263158,0.9685990338164251,0.9788445890968267,0.9627240143369176,0.9111090415363652,StratifiedSplit,ef_gender,,,NeuralNetwork,spatial
+ef_score,1,0.7821229050279329,0.9150326797385621,0.8433734939759036,0.9627240143369176,0.9111090415363652,StratifiedSplit,ef_gender,,,NeuralNetwork,spatial
+hf_score,0,0.9011627906976745,0.998389694041868,0.9472880061115356,0.9010752688172043,0.5724812123580933,StratifiedSplit,ef_money_inflation,ef_regulation_business_start,ef_gender,RandomForest,spatial
+hf_score,1,0.8947368421052632,0.1111111111111111,0.19767441860465115,0.9010752688172043,0.5724812123580933,StratifiedSplit,ef_money_inflation,ef_regulation_business_start,ef_gender,RandomForest,spatial
+hf_score,0,0.9278195488721804,0.9935587761674718,0.9595645412130637,0.9254480286738351,0.7412501605147888,StratifiedSplit,ef_gender,ef_money_inflation,y,XGBoost,spatial
+hf_score,1,0.8769230769230769,0.37254901960784315,0.5229357798165137,0.9254480286738351,0.7412501605147888,StratifiedSplit,ef_gender,ef_money_inflation,y,XGBoost,spatial
+hf_score,0,0.9893092105263158,0.9685990338164251,0.9788445890968267,0.9627240143369176,0.9111090415363652,StratifiedSplit,ef_gender,,,NeuralNetwork,spatial
+hf_score,1,0.7821229050279329,0.9150326797385621,0.8433734939759036,0.9627240143369176,0.9111090415363652,StratifiedSplit,ef_gender,,,NeuralNetwork,spatial
+pf_expression_bti,0,0.8336148648648649,0.9889779559118237,0.9046746104491293,0.8508960573476703,0.7812846736456174,StratifiedSplit,region_Western Europe,x,y,RandomForest,spatial
+pf_expression_bti,1,0.9478672985781991,0.5037783375314862,0.6578947368421053,0.8508960573476703,0.7812846736456174,StratifiedSplit,region_Western Europe,x,y,RandomForest,spatial
+pf_expression_bti,0,0.8837622005323869,0.9979959919839679,0.9374117647058823,0.9046594982078853,0.8687058823529411,StratifiedSplit,region_Western Europe,region_Latin America & the Caribbean,ef_trade_tariffs_sd_data,XGBoost,spatial
+pf_expression_bti,1,0.9925373134328358,0.6700251889168766,0.7999999999999999,0.9046594982078853,0.8687058823529411,StratifiedSplit,region_Western Europe,region_Latin America & the Caribbean,ef_trade_tariffs_sd_data,XGBoost,spatial
+pf_expression_bti,0,0.971,0.9729458917835672,0.9719719719719718,0.9598566308243728,0.9506324506324506,StratifiedSplit,pf_expression_direct_jailed_data,,,NeuralNetwork,spatial
+pf_expression_bti,1,0.9316455696202531,0.9269521410579346,0.9292929292929294,0.9598566308243728,0.9506324506324506,StratifiedSplit,pf_expression_direct_jailed_data,,,NeuralNetwork,spatial
+pf_rol_civil,0,0.7156308851224106,0.6773618538324421,0.6959706959706959,0.7620071684587814,0.7502232749582574,StratifiedSplit,ef_regulation_business_start,ef_legal_enforcement,ef_government,RandomForest,spatial
+pf_rol_civil,1,0.7905092592592593,0.8189448441247003,0.8044758539458187,0.7620071684587814,0.7502232749582574,StratifiedSplit,ef_regulation_business_start,ef_legal_enforcement,ef_government,RandomForest,spatial
+pf_rol_civil,0,0.7746212121212122,0.7290552584670231,0.751147842056933,0.8057347670250896,0.7959148969249978,StratifiedSplit,ef_regulation_business_start,ef_regulation_credit_ownership,x,XGBoost,spatial
+pf_rol_civil,1,0.8246828143021915,0.8573141486810552,0.8406819517930628,0.8057347670250896,0.7959148969249978,StratifiedSplit,ef_regulation_business_start,ef_regulation_credit_ownership,x,XGBoost,spatial
+pf_rol_civil,0,0.8864097363083164,0.7789661319073083,0.8292220113851992,0.8709677419354839,0.8627676877202495,StratifiedSplit,pf_ss_disappearances_organized,,,NeuralNetwork,spatial
+pf_rol_civil,1,0.8625277161862528,0.9328537170263789,0.8963133640552996,0.8709677419354839,0.8627676877202495,StratifiedSplit,pf_ss_disappearances_organized,,,NeuralNetwork,spatial
