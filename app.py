@@ -19,59 +19,51 @@ df = pd.concat(df_list)
 def main():
     st.title('My Modeling Results')
 
-    # Use a select box for user to select a target to view model results
+    # Use a select box for user to select a target
     st.sidebar.title('Select a target to view model results')
-    targets = ['All'] + df['target'].unique().tolist()
-    select_box = st.sidebar.selectbox('Targets', targets, index=0)
-
-    # Filter the DataFrame based on the selected target
-    if select_box == 'All':
-        selected_target_df = df
-    else:
-        selected_target_df = df[df['target'] == select_box]
+    select_target_box = st.sidebar.selectbox('Targets', ['All'] + df['target'].unique().tolist(), index=0)
 
     # Use a select box for user to select a data type
     st.sidebar.title('Select a data type')
-    data_types = ['All'] + df['data'].unique().tolist()
-    data_select_box = st.sidebar.selectbox('Data Types', data_types, index=0)
+    select_data_box = st.sidebar.selectbox('Data', df['data'].unique().tolist(), index=0)
 
-    # Filter the DataFrame based on the selected data type
-    if data_select_box == 'All':
-        selected_data_df = selected_target_df
-    else:
-        selected_data_df = selected_target_df[selected_target_df['data'] == data_select_box]
-
-    # Use a select box for user to select a cv method
+    # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
-    cv_methods = ['All'] + df['cv_method'].unique().tolist()
-    cv_select_box = st.sidebar.selectbox('CV Methods', cv_methods, index=0)
+    select_cv_box = st.sidebar.selectbox('CV method', df['cv_method'].unique().tolist(), index=0)
 
-    # Filter the DataFrame based on the selected cv method
-    if cv_select_box == 'All':
-        selected_df = selected_data_df
-    else:
-        selected_df = selected_data_df[selected_data_df['cv_method'] == cv_select_box]
+    # Apply selected filters to the DataFrame
+    selected_df = df.copy()
+    if select_target_box != 'All':
+        selected_df = selected_df[selected_df['target'] == select_target_box]
+    selected_df = selected_df[selected_df['data'] == select_data_box]
+    selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
 
-    # Display model results for the selected target, data type, and cv method
+    # Display the selected DataFrame in the app
     st.dataframe(selected_df)
 
-    # Create a histogram of the selected column for the selected target, data type, and cv method
-    fig = px.histogram(selected_df, x='model', color='class_label')
-    st.plotly_chart(fig)
-    
-    # Calculate the average macro_f1 score per model
-    avg_macro_f1_per_model = df.groupby('model')['macro_f1'].mean().reset_index()
+    # Group by model and calculate average macro_f1 score
+    avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
+    avg_f1_by_model_fig = px.bar(avg_f1_by_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
+    st.plotly_chart(avg_f1_by_model_fig)
 
-    # Create a bar plot of average macro_f1 score per model
-    fig_model = px.bar(avg_macro_f1_per_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
-    st.plotly_chart(fig_model)
+    # Group by data type and calculate average macro_f1 score
+    avg_f1_by_data = selected_df.groupby('data')['macro_f1'].mean().reset_index()
+    avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
+    st.plotly_chart(avg_f1_by_data_fig)
 
-    # Calculate the average macro_f1 score per data type
-    avg_macro_f1_per_data = df.groupby('data')['macro_f1'].mean().reset_index()
+    # Code to count frequency of top features per model
+    top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature']
+    top_features_df = selected_df[top_features_cols].melt(id_vars='model').dropna()
 
-    # Create a bar plot of average macro_f1 score per data type
-    fig_data = px.bar(avg_macro_f1_per_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
-    st.plotly_chart(fig_data)
+    # Group by top features and count their frequency
+    top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
+
+    # Filter the top_features_counts DataFrame based on the selected model
+    selected_top_features_counts = top_features_counts[top_features_counts['model'] == selected_df['model'].iloc[0]]
+
+    # Create a bar plot of top features for the selected model
+    fig_model_features = px.bar(selected_top_features_counts, x='value', y='counts', title=f'Top Features Importance for {selected_df["model"].iloc[0]} Model')
+    st.plotly_chart(fig_model_features)
 
 if __name__ == "__main__":
     main()
