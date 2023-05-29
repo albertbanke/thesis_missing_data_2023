@@ -62,45 +62,12 @@ def main():
     # Group by top features and count their frequency
     top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
 
-    # Create a subplot
-    fig = go.Figure()
+    # Sort features by counts in descending order and select top 5
+    top_features_counts = top_features_counts.sort_values('counts', ascending=False).head(5)
 
-    # Create a plot for each model
-    for model in selected_df['model'].unique():
-        selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
-        fig.add_trace(
-            go.Bar(x=selected_top_features_counts['value'], y=selected_top_features_counts['counts'], name=model, visible=False)
-        )
-
-    # Make first model visible
-    fig.data[0].visible = True
-
-    # Create dropdown menu
-    buttons = []
-    for i, model in enumerate(selected_df['model'].unique()):
-        visibility = [False]*len(fig.data)
-        visibility[i] = True
-        button = dict(
-            label = model,
-            method = 'update',
-            args = [{'visible': visibility}]
-        )
-        buttons.append(button)
-
-    fig.update_layout(
-        updatemenus=[
-            dict(
-                type="buttons",
-                direction="down",
-                showactive=True,
-                buttons=buttons
-            )
-        ]
-    )
-
-    st.plotly_chart(fig)
+    # Create a bar plot of top 5 features
+    fig_model_features = px.bar(top_features_counts, x='value', y='counts', title=f'Top 5 Features Importance')
+    st.plotly_chart(fig_model_features)
 
 if __name__ == "__main__":
     main()
-    
-    
