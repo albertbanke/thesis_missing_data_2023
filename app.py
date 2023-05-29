@@ -41,11 +41,22 @@ def main():
     else:
         selected_data_df = selected_target_df[selected_target_df['data'] == data_select_box]
 
-    # Display model results for the selected target and data type
-    st.dataframe(selected_data_df)
+    # Use a select box for user to select a cv method
+    st.sidebar.title('Select a CV method')
+    cv_methods = ['All'] + df['cv_method'].unique().tolist()
+    cv_select_box = st.sidebar.selectbox('CV Methods', cv_methods, index=0)
 
-    # Create a histogram of the selected column for the selected target and data type
-    fig = px.histogram(selected_data_df, x='model', color='class_label')
+    # Filter the DataFrame based on the selected cv method
+    if cv_select_box == 'All':
+        selected_df = selected_data_df
+    else:
+        selected_df = selected_data_df[selected_data_df['cv_method'] == cv_select_box]
+
+    # Display model results for the selected target, data type, and cv method
+    st.dataframe(selected_df)
+
+    # Create a histogram of the selected column for the selected target, data type, and cv method
+    fig = px.histogram(selected_df, x='model', color='class_label')
     st.plotly_chart(fig)
 
 if __name__ == "__main__":
