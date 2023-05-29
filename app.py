@@ -68,6 +68,10 @@ def main():
     # Create a plot for each model
     for model in selected_df['model'].unique():
         selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
+
+        # Sort features by counts in descending order
+        selected_top_features_counts = selected_top_features_counts.sort_values('counts', ascending=False)
+
         fig.add_trace(
             go.Bar(x=selected_top_features_counts['value'], y=selected_top_features_counts['counts'], name=model, visible=False)
         )
@@ -87,15 +91,25 @@ def main():
         )
         buttons.append(button)
 
+    # Customize plot appearance
     fig.update_layout(
         updatemenus=[
             dict(
                 type="buttons",
                 direction="down",
                 showactive=True,
-                buttons=buttons
+                buttons=buttons,
+                bgcolor="Black",  # Change button background color to black
+                bordercolor="White",  # Change button border color to white
+                font=dict(color="White"),  # Change button font color to white
             )
-        ]
+        ],
+        autosize=False,
+        width=500,
+        height=500,
+        paper_bgcolor="Black",  # Change plot background color to black
+        plot_bgcolor="Black",  # Change plot area background color to black
+        font=dict(color="White")  # Change font color to white
     )
 
     st.plotly_chart(fig)
