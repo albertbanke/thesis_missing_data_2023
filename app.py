@@ -29,7 +29,7 @@ def main():
 
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
-    select_cv_box = st.sidebar.selectbox('CV method', df['cv_method'].unique().tolist(), index=0)
+    select_cv_box = st.sidebar.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
 
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
@@ -37,7 +37,8 @@ def main():
         selected_df = selected_df[selected_df['target'] == select_target_box]
     if select_data_box != 'All':
         selected_df = selected_df[selected_df['data'] == select_data_box]
-    selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
+    if select_cv_box != 'All':
+        selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
 
     # Display the selected DataFrame in the app
     st.dataframe(selected_df)
