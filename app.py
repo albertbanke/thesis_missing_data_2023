@@ -61,19 +61,44 @@ def main():
 
     # Group by top features and count their frequency
     top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
-    
-    # Create a subplot for each model
-    models = selected_df['model'].unique()
-    subplot_titles = [f'Top Features Importance for {model} Model' for model in models]
-    fig_model_features = make_subplots(rows=len(models), cols=1, subplot_titles=subplot_titles)
+
+    # Create a subplot
+    fig = go.Figure()
 
     # Create a plot for each model
-    for i, model in enumerate(models, start=1):
+    for model in selected_df['model'].unique():
         selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
-        fig = px.bar(selected_top_features_counts, x='value', y='counts')
-        fig_model_features.add_trace(fig.data[0], row=i, col=1)
+        fig.add_trace(
+            go.Bar(x=selected_top_features_counts['value'], y=selected_top_features_counts['counts'], name=model, visible=False)
+        )
 
-    st.plotly_chart(fig_model_features)
+    # Make first model visible
+    fig.data[0].visible = True
+
+    # Create dropdown menu
+    buttons = []
+    for i, model in enumerate(selected_df['model'].unique()):
+        visibility = [False]*len(fig.data)
+        visibility[i] = True
+        button = dict(
+            label = model,
+            method = 'update',
+            args = [{'visible': visibility}]
+        )
+        buttons.append(button)
+
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                buttons=buttons
+            )
+        ]
+    )
+
+    st.plotly_chart(fig)
 
 if __name__ == "__main__":
     main()
