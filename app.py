@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import glob
 
 # Load your DataFrames
@@ -59,12 +61,18 @@ def main():
 
     # Group by top features and count their frequency
     top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
+    
+    # Create a subplot for each model
+    models = selected_df['model'].unique()
+    subplot_titles = [f'Top Features Importance for {model} Model' for model in models]
+    fig_model_features = make_subplots(rows=len(models), cols=1, subplot_titles=subplot_titles)
 
-    # Filter the top_features_counts DataFrame based on the selected model
-    selected_top_features_counts = top_features_counts[top_features_counts['model'] == selected_df['model'].iloc[0]]
+    # Create a plot for each model
+    for i, model in enumerate(models, start=1):
+        selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
+        fig = px.bar(selected_top_features_counts, x='value', y='counts')
+        fig_model_features.add_trace(fig.data[0], row=i, col=1)
 
-    # Create a bar plot of top features for the selected model
-    fig_model_features = px.bar(selected_top_features_counts, x='value', y='counts', title=f'Top Features Importance for {selected_df["model"].iloc[0]} Model')
     st.plotly_chart(fig_model_features)
 
 if __name__ == "__main__":
