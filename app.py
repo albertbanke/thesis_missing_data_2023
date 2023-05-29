@@ -44,7 +44,7 @@ def main():
         selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
 
     # Create two columns layout
-    col1, col2 = st.beta_columns(2)
+    col1, col2 = st.columns(2)
 
     # First column
     with col1:
