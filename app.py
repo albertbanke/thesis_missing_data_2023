@@ -25,7 +25,7 @@ def main():
 
     # Use a select box for user to select a data type
     st.sidebar.title('Select a data type')
-    select_data_box = st.sidebar.selectbox('Data', df['data'].unique().tolist(), index=0)
+    select_data_box = st.sidebar.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
 
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
@@ -35,7 +35,8 @@ def main():
     selected_df = df.copy()
     if select_target_box != 'All':
         selected_df = selected_df[selected_df['target'] == select_target_box]
-    selected_df = selected_df[selected_df['data'] == select_data_box]
+    if select_data_box != 'All':
+        selected_df = selected_df[selected_df['data'] == select_data_box]
     selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
 
     # Display the selected DataFrame in the app
