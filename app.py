@@ -22,10 +22,20 @@ for filename in filenames:
 df = pd.concat(df_list)
 
 # Read the nonprocessed GeoParquet file
-gdf_nonproc = gpd.read_parquet('gdf_engineered.parquet')
+gdf = gpd.read_parquet('gdf_engineered.parquet')
+
+# Calculate the centroid for each geometry
+gdf['centroid'] = gdf['geometry'].centroid
+
+# Extract longitude and latitude from the centroids
+gdf['lon'] = gdf['centroid'].apply(lambda p: p.x)
+gdf['lat'] = gdf['centroid'].apply(lambda p: p.y)
+
+# Drop the centroid column as it's no longer needed
+gdf = gdf.drop('centroid', axis=1)
 
 # Drop the specified columns from the GeoDataFrame
-gdf_nonproc = gdf_nonproc.drop(columns=['region', 'countries', 'geometry', 'country_code'])
+gdf = gdf.drop(columns=['region', 'countries', 'geometry', 'country_code'])
 
 
 def main():
@@ -45,11 +55,11 @@ def main():
     
     # Use a select box for user to select a year
     st.sidebar.title('Select a year')
-    select_year_box = st.sidebar.selectbox('Year', gdf_nonproc['year'].unique().tolist(), index=0)
+    select_year_box = st.sidebar.selectbox('Year', gdf['year'].unique().tolist(), index=0)
 
     # Use a select box for user to select a column to visualize on the map
     st.sidebar.title('Select a column to visualize on the map')
-    select_map_column_box = st.sidebar.selectbox('Map Column', gdf_nonproc.columns.tolist(), index=0)
+    select_map_column_box = st.sidebar.selectbox('Map Column', gdf.columns.tolist(), index=0)
 
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
@@ -64,7 +74,7 @@ def main():
     st.dataframe(selected_df)
 
     # Select the data from the GeoDataFrame
-    selected_gdf = gdf_nonproc[gdf_nonproc['year'] == select_year_box]
+    selected_gdf = gdf[gdf['year'] == select_year_box]
 
     # Convert the GeoDataFrame to a DataFrame for Pydeck
     selected_gdf_df = pd.DataFrame(selected_gdf)
