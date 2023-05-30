@@ -33,6 +33,10 @@ def main():
     st.sidebar.title('Select a CV method')
     select_cv_box = st.sidebar.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
 
+    # Use a select box for user to select a class label
+    st.sidebar.title('Select a class label')
+    select_class_label_box = st.sidebar.selectbox('Class Label', ['All'] + df['class_label'].unique().tolist(), index=0)
+
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
     if select_target_box != 'All':
@@ -41,6 +45,8 @@ def main():
         selected_df = selected_df[selected_df['data'] == select_data_box]
     if select_cv_box != 'All':
         selected_df = selected_df[selected_df['cv_method'] == select_cv_box]
+    if select_class_label_box != 'All':
+        selected_df = selected_df[selected_df['class_label'] == select_class_label_box]
 
     # Display the selected DataFrame in the app
     st.dataframe(selected_df)
