@@ -25,7 +25,7 @@ df = pd.concat(df_list)
 gdf_nonproc = gpd.read_parquet('gdf_nonproc.parquet')
 
 # Drop the specified columns from the GeoDataFrame
-gdf_nonproc = gdf_nonproc.drop(columns=['region', 'countries', 'geometry', 'country_code', 'centroid'])
+gdf_nonproc = gdf_nonproc.drop(columns=['region', 'countries', 'geometry', 'country_code'])
 
 def main():
     st.title('My Modeling Results')
