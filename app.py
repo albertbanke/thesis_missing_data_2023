@@ -22,13 +22,11 @@ for filename in filenames:
 df = pd.concat(df_list)
 
 # Read the nonprocessed GeoParquet file
-gdf_nonproc = gpd.read_parquet('gdf_nonproc.parquet')
+gdf_nonproc = gpd.read_parquet('gdf_engineered.parquet')
 
 # Drop the specified columns from the GeoDataFrame
 gdf_nonproc = gdf_nonproc.drop(columns=['region', 'countries', 'geometry', 'country_code'])
 
-# For replacing with zero
-gdf_nonproc = gdf_nonproc.fillna(0)
 
 def main():
     st.title('My Modeling Results')
