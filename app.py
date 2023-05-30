@@ -37,6 +37,14 @@ def main():
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
     select_cv_box = st.sidebar.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
+    
+    # Use a select box for user to select a year
+    st.sidebar.title('Select a year')
+    select_year_box = st.sidebar.selectbox('Year', gdf_nonproc['year'].unique().tolist(), index=0)
+
+    # Use a select box for user to select a column to visualize on the map
+    st.sidebar.title('Select a column to visualize on the map')
+    select_map_column_box = st.sidebar.selectbox('Map Column', gdf_nonproc.columns.tolist(), index=0)
 
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
