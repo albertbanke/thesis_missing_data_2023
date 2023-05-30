@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import glob
+from shapely.geometry import Polygon, MultiPolygon
 import geopandas as gpd
 import pydeck as pdk
 
