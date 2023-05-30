@@ -55,7 +55,7 @@ def main():
     top_10_models_df = selected_df[selected_df['model'].isin(top_10_models)]
 
     # Code to count frequency of top features per model
-    top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature', 'top4_feature', 'top5_feature']
+    top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature']
     top_features_df = top_10_models_df[top_features_cols].melt(id_vars='model').dropna()
 
     # Group by model and top features and count their frequency
