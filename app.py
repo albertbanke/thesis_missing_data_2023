@@ -47,32 +47,60 @@ def main():
 
     # Group by model and calculate average macro_f1 score
     avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
+    avg_f1_by_model_fig = px.bar(avg_f1_by_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
+    st.plotly_chart(avg_f1_by_model_fig)
 
-    # Sort by average macro_f1 and keep top 10 models
-    top_10_models = avg_f1_by_model.sort_values('macro_f1', ascending=False).head(10)['model'].tolist()
-
-    # Filter selected_df to keep only top 10 models
-    top_10_models_df = selected_df[selected_df['model'].isin(top_10_models)]
+    # Group by data type and calculate average macro_f1 score
+    avg_f1_by_data = selected_df.groupby('data')['macro_f1'].mean().reset_index()
+    avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
+    st.plotly_chart(avg_f1_by_data_fig)
 
     # Code to count frequency of top features per model
     top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature']
-    top_features_df = top_10_models_df[top_features_cols].melt(id_vars='model').dropna()
+    top_features_df = selected_df[top_features_cols].melt(id_vars='model').dropna()
 
-    # Group by model and top features and count their frequency
-    top_features_counts = top_features_df.groupby(['model', 'value']).size().reset_index(name='counts')
-    
-    top_features_counts = top_features_counts.groupby('model').apply(lambda x: x.sort_values('counts', ascending=False).head(5)).reset_index(drop=True)
+    # Group by top features and count their frequency
+    top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
 
-    # Create a subplot for each model
-    fig = make_subplots(rows=2, cols=5, subplot_titles=top_10_models)
+    # Create a subplot
+    fig = go.Figure()
 
-    # Iterate over models and add a bar plot for each one
-    for i, model in enumerate(top_10_models):
-        df_temp = top_features_counts[top_features_counts['model'] == model]
-        fig.add_trace(go.Bar(x=df_temp['value'], y=df_temp['counts'], name=model), row=(i//5)+1, col=(i%5)+1)
-    
-    fig.update_layout(height=800, width=1500, title_text="Top 5 Feature Importances per Model")
+    # Create a plot for each model
+    for model in selected_df['model'].unique():
+        selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
+        fig.add_trace(
+            go.Bar(x=selected_top_features_counts['value'], y=selected_top_features_counts['counts'], name=model, visible=False)
+        )
+
+    # Make first model visible
+    fig.data[0].visible = True
+
+    # Create dropdown menu
+    buttons = []
+    for i, model in enumerate(selected_df['model'].unique()):
+        visibility = [False]*len(fig.data)
+        visibility[i] = True
+        button = dict(
+            label = model,
+            method = 'update',
+            args = [{'visible': visibility}]
+        )
+        buttons.append(button)
+
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                buttons=buttons
+            )
+        ]
+    )
+
     st.plotly_chart(fig)
-    
+
 if __name__ == "__main__":
     main()
+    
+    
