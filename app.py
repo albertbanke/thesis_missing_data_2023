@@ -55,7 +55,7 @@ def main():
     avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
     avg_f1_by_model_fig = px.bar(avg_f1_by_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
     st.plotly_chart(avg_f1_by_model_fig)
-
+    
     # Group by data type and calculate average macro_f1 score
     avg_f1_by_data = selected_df.groupby('data')['macro_f1'].mean().reset_index()
     avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
