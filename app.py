@@ -61,11 +61,11 @@ def main():
     avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
     st.plotly_chart(avg_f1_by_data_fig)
     
-    # Group by class label and calculate average macro_f1 score
-    avg_f1_by_class_label = selected_df.groupby('class_label')['macro_f1'].mean().reset_index()
-    avg_f1_by_class_label_fig = px.bar(avg_f1_by_class_label, x='class_label', y='macro_f1', 
-                                       title='Average Macro F1 Score per Class Label')
-    st.plotly_chart(avg_f1_by_class_label_fig)
+    # Group by class label and calculate average binary_f1 score
+    avg_binary_f1_by_class_label = selected_df.groupby('class_label')['f1_score'].mean().reset_index()
+    avg_binary_f1_by_class_label_fig = px.bar(avg_binary_f1_by_class_label, x='class_label', y='f1_score',
+                                            title='Average Binary F1 Score per Class Label')
+    st.plotly_chart(avg_binary_f1_by_class_label_fig)
     
     # Group by model and CV method, then calculate average macro_f1 score
     avg_f1_by_model_cv = selected_df.groupby(['model', 'cv_method'])['macro_f1'].mean().reset_index()
