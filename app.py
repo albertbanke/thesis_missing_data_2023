@@ -50,6 +50,12 @@ def main():
     # Display the selected DataFrame in the app
     st.dataframe(selected_df)
 
+    # Select the data from the GeoDataFrame
+    selected_gdf = gdf_nonproc[gdf_nonproc['year'] == select_year_box]
+
+    # Convert the GeoDataFrame to a DataFrame for Pydeck
+    selected_gdf_df = pd.DataFrame(selected_gdf)
+
     # Group by model and calculate average macro_f1 score
     avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
     avg_f1_by_model_fig = px.bar(avg_f1_by_model, x='model', y='macro_f1', title='Average Macro F1 Score per Model')
