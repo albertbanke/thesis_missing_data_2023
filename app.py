@@ -4,6 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import glob
+import geopandas as gpd
+import pydeck as pdk
 
 # Load your DataFrames
 filenames = glob.glob("results_*.csv")
@@ -17,6 +19,9 @@ for filename in filenames:
 
 # Concatenate all the dataframes
 df = pd.concat(df_list)
+
+# Read the nonprocessed GeoParquet file
+gdf_nonproc = gpd.read_parquet('gdf_nonproc.parquet')
 
 def main():
     st.title('My Modeling Results')
@@ -100,7 +105,28 @@ def main():
 
     st.plotly_chart(fig)
 
+    # Create a Pydeck chart
+    map_chart = pdk.Deck(
+        map_style='mapbox://styles/mapbox/light-v9',
+        initial_view_state=pdk.ViewState(
+            latitude=selected_gdf_df['lat'].mean(),
+            longitude=selected_gdf_df['lon'].mean(),
+            zoom=11,
+            pitch=50,
+        ),
+        layers=[
+            pdk.Layer(
+                'ScatterplotLayer',
+                data=selected_gdf_df,
+                get_position=['lon', 'lat'],
+                get_color=[200, 30, 0, 160],
+                get_radius=100,
+            ),
+        ],
+    )
+
+    # Show the Pydeck chart in the app
+    st.pydeck_chart(map_chart)
+    
 if __name__ == "__main__":
     main()
-    
-    
