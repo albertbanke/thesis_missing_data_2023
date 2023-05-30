@@ -54,6 +54,18 @@ def main():
     avg_f1_by_data = selected_df.groupby('data')['macro_f1'].mean().reset_index()
     avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
     st.plotly_chart(avg_f1_by_data_fig)
+    
+    # Group by model and CV method, then calculate average macro_f1 score
+    avg_f1_by_model_cv = selected_df.groupby(['model', 'cv_method'])['macro_f1'].mean().reset_index()
+    avg_f1_by_model_cv_fig = px.bar(avg_f1_by_model_cv, x='model', y='macro_f1', color='cv_method', 
+                                    barmode='group', title='Average Macro F1 Score per Model and CV Method')
+    st.plotly_chart(avg_f1_by_model_cv_fig)
+
+    # Group by model and target, then calculate average macro_f1 score
+    avg_f1_by_model_target = selected_df.groupby(['model', 'target'])['macro_f1'].mean().reset_index()
+    avg_f1_by_model_target_fig = px.bar(avg_f1_by_model_target, x='model', y='macro_f1', color='target',
+                                        barmode='group', title='Average Macro F1 Score per Model and Target')
+    st.plotly_chart(avg_f1_by_model_target_fig)
 
     # Code to count frequency of top features per model
     top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature']
