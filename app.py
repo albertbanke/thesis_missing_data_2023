@@ -4,9 +4,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import glob
-from shapely.geometry import Polygon, MultiPolygon
-import geopandas as gpd
-import pydeck as pdk
 
 # Load your DataFrames
 filenames = glob.glob("results_*.csv")
@@ -20,23 +17,6 @@ for filename in filenames:
 
 # Concatenate all the dataframes
 df = pd.concat(df_list)
-
-# Read the nonprocessed GeoParquet file
-gdf = gpd.read_parquet('gdf_engineered.parquet')
-
-# Calculate the centroid for each geometry
-gdf['centroid'] = gdf['geometry'].centroid
-
-# Extract longitude and latitude from the centroids
-gdf['lon'] = gdf['centroid'].apply(lambda p: p.x)
-gdf['lat'] = gdf['centroid'].apply(lambda p: p.y)
-
-# Drop the centroid column as it's no longer needed
-gdf = gdf.drop('centroid', axis=1)
-
-# Drop the specified columns from the GeoDataFrame
-gdf = gdf.drop(columns=['region', 'countries', 'geometry', 'country_code'])
-
 
 def main():
     st.title('My Modeling Results')
@@ -52,14 +32,6 @@ def main():
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
     select_cv_box = st.sidebar.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
-    
-    # Use a select box for user to select a year
-    st.sidebar.title('Select a year')
-    select_year_box = st.sidebar.selectbox('Year', gdf['year'].unique().tolist(), index=0)
-
-    # Use a select box for user to select a column to visualize on the map
-    st.sidebar.title('Select a column to visualize on the map')
-    select_map_column_box = st.sidebar.selectbox('Map Column', gdf.columns.tolist(), index=0)
 
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
@@ -72,12 +44,6 @@ def main():
 
     # Display the selected DataFrame in the app
     st.dataframe(selected_df)
-
-    # Select the data from the GeoDataFrame
-    selected_gdf = gdf[gdf['year'] == select_year_box]
-
-    # Convert the GeoDataFrame to a DataFrame for Pydeck
-    selected_gdf_df = pd.DataFrame(selected_gdf)
 
     # Group by model and calculate average macro_f1 score
     avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
@@ -96,66 +62,12 @@ def main():
     # Group by top features and count their frequency
     top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
 
-    # Create a subplot
-    fig = go.Figure()
+    # Sort features by counts in descending order and select top 5
+    top_features_counts = top_features_counts.sort_values('counts', ascending=False).head(5)
 
-    # Create a plot for each model
-    for model in selected_df['model'].unique():
-        selected_top_features_counts = top_features_counts[top_features_counts['model'] == model]
-        fig.add_trace(
-            go.Bar(x=selected_top_features_counts['value'], y=selected_top_features_counts['counts'], name=model, visible=False)
-        )
+    # Create a bar plot of top 5 features
+    fig_model_features = px.bar(top_features_counts, x='value', y='counts', title=f'Top 5 Features Importance')
+    st.plotly_chart(fig_model_features)
 
-    # Make first model visible
-    fig.data[0].visible = True
-
-    # Create dropdown menu
-    buttons = []
-    for i, model in enumerate(selected_df['model'].unique()):
-        visibility = [False]*len(fig.data)
-        visibility[i] = True
-        button = dict(
-            label = model,
-            method = 'update',
-            args = [{'visible': visibility}]
-        )
-        buttons.append(button)
-
-    fig.update_layout(
-        updatemenus=[
-            dict(
-                type="buttons",
-                direction="down",
-                showactive=True,
-                buttons=buttons
-            )
-        ]
-    )
-
-    st.plotly_chart(fig)
-
-    # Create a Pydeck chart
-    map_chart = pdk.Deck(
-        map_style='mapbox://styles/mapbox/light-v9',
-        initial_view_state=pdk.ViewState(
-            latitude=selected_gdf_df['lat'].mean(),
-            longitude=selected_gdf_df['lon'].mean(),
-            zoom=11,
-            pitch=50,
-        ),
-        layers=[
-            pdk.Layer(
-                'ScatterplotLayer',
-                data=selected_gdf_df,
-                get_position=['lon', 'lat'],
-                get_color=[200, 30, 0, 160],
-                get_radius=100,
-            ),
-        ],
-    )
-
-    # Show the Pydeck chart in the app
-    st.pydeck_chart(map_chart)
-    
 if __name__ == "__main__":
     main()
