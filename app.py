@@ -125,11 +125,13 @@ def main():
     # Add a new section for the map
     st.subheader('Interactive Map')
     
-    # Use the .explore() function from GeoPandas
-    m = selected_gdf.explore(column=select_feature_box, legend=True)
+    # Wrap the map in an expand section
+    with st.expander("Click to expand map"):
+        # Use the .explore() function from GeoPandas
+        m = selected_gdf.explore(column=select_feature_box, legend=True)
         
-    # Render the map in Streamlit
-    components.html(m._repr_html_(), height=800, width=1000)
+        # Render the map in Streamlit
+        components.html(m._repr_html_(), height=800, width=1000)
 
 if __name__ == "__main__":
     main()
