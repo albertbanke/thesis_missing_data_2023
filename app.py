@@ -108,9 +108,12 @@ def main():
     # Use a select box for user to select a feature to plot
     select_feature_box = st.sidebar.selectbox('Feature', gdf_engineered.columns.tolist())
 
-    # Use a select slider for user to select a year or a range of years
-    min_year = gdf_engineered['year'].min()
-    max_year = gdf_engineered['year'].max()
+    # Get the min and max years in your DataFrame
+    min_year = int(gdf_engineered['year'].min())
+    max_year = int(gdf_engineered['year'].max())
+
+    # Use a slider for user to select a range of years
+    st.sidebar.title('Select a range of years')
     select_year_slider = st.sidebar.slider('Year', min_year, max_year, (min_year, max_year))
 
     # Filter the GeoDataFrame based on the selected year(s)
