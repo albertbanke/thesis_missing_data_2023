@@ -126,7 +126,7 @@ def main():
     m = selected_gdf.explore(column=select_feature_box, legend=True)
         
     # Render the map in Streamlit
-    components.html(m._repr_html_(), height=600, width=800)
+    components.html(m._repr_html_(), height=800, width=1000)
 
 if __name__ == "__main__":
     main()
