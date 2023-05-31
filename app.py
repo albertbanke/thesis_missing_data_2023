@@ -21,7 +21,7 @@ for filename in filenames:
 df = pd.concat(df_list)
 
 # Load your GeoDataFrame
-gdf_engineered = gpd.read_file('gdf_engineered.parquet')  # replace with your GeoParquet file path
+gdf_engineered = gpd.read_parquet('gdf_engineered.parquet')  # replace with your GeoParquet file path
 
 def main():
     st.title('My Modeling Results')
