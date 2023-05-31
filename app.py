@@ -122,8 +122,17 @@ def main():
     # Filter the GeoDataFrame based on the selected year(s)
     selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]
 
-    # Calculate mean for selected range of years for each geographical unit (country in this case)
-    selected_gdf = selected_gdf.groupby(['countries', 'year'], as_index=False).mean()
+    # Preserve the geometry before grouping
+    geometry = selected_gdf[['countries', 'geometry']].drop_duplicates()
+
+    # Exclude 'geometry' while calculating mean
+    selected_gdf = selected_gdf.drop(columns='geometry').groupby(['countries', 'year'], as_index=False).mean()
+
+    # Merge back the geometry
+    selected_gdf = selected_gdf.merge(geometry, on='countries')
+
+    # Convert back to GeoDataFrame
+    selected_gdf = gpd.GeoDataFrame(selected_gdf, geometry='geometry')
     
     # Add a new section for the map
     st.subheader('Interactive Map')
