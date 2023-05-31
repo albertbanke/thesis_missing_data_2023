@@ -111,16 +111,15 @@ def main():
     # Use a select box for user to select a feature to plot
     select_feature_box = st.sidebar.selectbox('Feature', gdf_engineered.columns.tolist())
 
-    # Get the min and max years in your DataFrame
-    min_year = int(gdf_engineered['year'].min())
-    max_year = int(gdf_engineered['year'].max())
+    # Get unique years in your DataFrame
+    unique_years = sorted(gdf_engineered['year'].unique().tolist())
 
-    # Use a slider for user to select a range of years
-    st.sidebar.title('Select a range of years')
-    select_year_slider = st.sidebar.slider('Year', min_year, max_year, (min_year, max_year))
+    # Use a select box for user to select a year
+    st.sidebar.title('Select a year')
+    select_year_box = st.sidebar.selectbox('Year', unique_years)
 
-    # Filter the GeoDataFrame based on the selected year(s)
-    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]    
+    # Filter the GeoDataFrame based on the selected year
+    selected_gdf = gdf_engineered[gdf_engineered['year'] == select_year_box]
     
     # Add a new section for the map
     st.subheader('Interactive Map')
