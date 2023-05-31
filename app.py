@@ -11,6 +11,9 @@ import mapclassify
 from datetime import datetime
 import streamlit.components.v1 as components
 
+# Set page layout
+st.set_page_config(layout="wide")
+
 # Load your DataFrames
 filenames = glob.glob("results_*.csv")
 df_list = []
