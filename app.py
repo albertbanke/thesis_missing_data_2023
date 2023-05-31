@@ -4,6 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import glob
+import geopandas as gpd
+import streamlit.components.v1 as components
 
 # Load your DataFrames
 filenames = glob.glob("results_*.csv")
@@ -17,6 +19,9 @@ for filename in filenames:
 
 # Concatenate all the dataframes
 df = pd.concat(df_list)
+
+# Load your GeoDataFrame
+gdf_engineered = gpd.read_file('gdf_engineered.parquet')  # replace with your GeoParquet file path
 
 def main():
     st.title('My Modeling Results')
@@ -92,6 +97,15 @@ def main():
     # Create a bar plot of top 5 features
     fig_model_features = px.bar(top_features_counts, x='value', y='counts', title=f'Top 5 Features Importance')
     st.plotly_chart(fig_model_features)
+
+    # Add a new section for the map
+    st.subheader('Interactive Map')
+
+    # Use the .explore() function from GeoPandas
+    m = gdf_engineered.explore(column='hf_score', legend=True)  # replace 'your_column' with the column you want to plot
+    
+    # Render the map in Streamlit
+    components.html(m._repr_html_(), height=600, width=800)
 
 if __name__ == "__main__":
     main()
