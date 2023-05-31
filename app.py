@@ -14,7 +14,7 @@ import streamlit.components.v1 as components
 # Set page layout
 st.set_page_config(layout="wide")
 
-# Load your DataFrames
+# Load the DataFrames
 filenames = glob.glob("results_*.csv")
 df_list = []
 
@@ -27,8 +27,8 @@ for filename in filenames:
 # Concatenate all the dataframes
 df = pd.concat(df_list)
 
-# Load your GeoDataFrame
-gdf_engineered = gpd.read_parquet('gdf_engineered.parquet')  # replace with your GeoParquet file path
+# Load the GeoDataFrame
+gdf_engineered = gpd.read_parquet('gdf_engineered.parquet')  
 
 def main():
     st.title('My Modeling Results')
@@ -111,8 +111,9 @@ def main():
     # Use a select box for user to select a feature to plot
     select_feature_box = st.sidebar.selectbox('Feature', gdf_engineered.columns.tolist())
 
-    # Get unique years in your DataFrame
-    unique_years = sorted(gdf_engineered['year'].unique().tolist())
+    # Get unique years in the DataFrame
+    unique_years = sorted([int(year) for year in gdf_engineered['year'].unique().tolist()])
+
 
     # Use a select box for user to select a year
     st.sidebar.title('Select a year')
