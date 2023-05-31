@@ -38,7 +38,7 @@ def main():
     col1, col2 = st.sidebar.columns(2)
 
     # Use a select box for user to select a target
-    col1.title('Select a target to view model results')
+    col1.title('Select a target')
     select_target_box = col1.selectbox('Targets', ['All'] + df['target'].unique().tolist(), index=0)
 
     # Use a select box for user to select a data type
