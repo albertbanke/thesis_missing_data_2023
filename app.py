@@ -43,7 +43,7 @@ def main():
 
     # Use a select box for user to select a data type
     col2.title('Select a data type')
-    select_data_box = col2.sidebar.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
+    select_data_box = col2.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
 
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
