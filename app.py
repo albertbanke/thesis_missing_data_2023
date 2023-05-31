@@ -119,6 +119,9 @@ def main():
     # Filter the GeoDataFrame based on the selected year(s)
     selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]    
     
+    # Add a new section for the map
+    st.subheader('Interactive Map')
+    
     # Use the .explore() function from GeoPandas
     m = selected_gdf.explore(column=select_feature_box, legend=True)
         
