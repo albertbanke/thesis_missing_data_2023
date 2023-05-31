@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import glob
 import geopandas as gpd
+import matplotlib
+import mapclassify
 import streamlit.components.v1 as components
 
 # Load your DataFrames
