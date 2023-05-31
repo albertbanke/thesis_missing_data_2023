@@ -31,15 +31,19 @@ df = pd.concat(df_list)
 gdf_engineered = gpd.read_parquet('gdf_engineered.parquet')  
 
 def main():
+    
     st.title('My Modeling Results')
+    
+    # Define two columns
+    col1, col2 = st.sidebar.columns(2)
 
     # Use a select box for user to select a target
-    st.sidebar.title('Select a target to view model results')
-    select_target_box = st.sidebar.selectbox('Targets', ['All'] + df['target'].unique().tolist(), index=0)
+    col1.title('Select a target to view model results')
+    select_target_box = col1.selectbox('Targets', ['All'] + df['target'].unique().tolist(), index=0)
 
     # Use a select box for user to select a data type
-    st.sidebar.title('Select a data type')
-    select_data_box = st.sidebar.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
+    col2.title('Select a data type')
+    select_data_box = col2.sidebar.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
 
     # Use a select box for user to select a CV method
     st.sidebar.title('Select a CV method')
