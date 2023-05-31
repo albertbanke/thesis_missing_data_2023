@@ -120,30 +120,16 @@ def main():
     select_year_slider = st.sidebar.slider('Year', min_year, max_year, (min_year, max_year))
 
     # Filter the GeoDataFrame based on the selected year(s)
-    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]
-
-    # Preserve the geometry before grouping
-    geometry = selected_gdf[['countries', 'geometry']].drop_duplicates()
-
-    # Exclude 'geometry' while calculating mean
-    selected_gdf = selected_gdf.drop(columns='geometry').groupby(['countries', 'year'], as_index=False).mean()
-
-    # Merge back the geometry
-    selected_gdf = selected_gdf.merge(geometry, on='countries')
-
-    # Convert back to GeoDataFrame
-    selected_gdf = gpd.GeoDataFrame(selected_gdf, geometry='geometry')
+    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]    
     
     # Add a new section for the map
     st.subheader('Interactive Map')
     
-    # Wrap the map in an expand section
-    with st.expander("Interactive Map"):
-        # Use the .explore() function from GeoPandas
-        m = selected_gdf.explore(column=select_feature_box, legend=True)
+    # Use the .explore() function from GeoPandas
+    m = selected_gdf.explore(column=select_feature_box, legend=True)
         
-        # Render the map in Streamlit
-        components.html(m._repr_html_(), height=800, width=1000)
+    # Render the map in Streamlit
+    components.html(m._repr_html_(), height=800, width=1000)
 
 if __name__ == "__main__":
     main()
