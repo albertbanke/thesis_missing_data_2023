@@ -1,3 +1,4 @@
+# Imports to get the streamlit app to run
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -7,6 +8,7 @@ import glob
 import geopandas as gpd
 import matplotlib
 import mapclassify
+from datetime import datetime
 import streamlit.components.v1 as components
 
 # Load your DataFrames
@@ -101,11 +103,22 @@ def main():
     st.plotly_chart(fig_model_features)
 
     # Add a new section for the map
-    st.subheader('Interactive Map')
+    st.sidebar.title('Interactive Map Settings')
 
-    # Use the .explore() function from GeoPandas
-    m = gdf_engineered.explore(column='ef_government', legend=True)  # replace 'your_column' with the column you want to plot
+    # Use a select box for user to select a feature to plot
+    select_feature_box = st.sidebar.selectbox('Feature', gdf_engineered.columns.tolist())
+
+    # Use a select slider for user to select a year or a range of years
+    min_year = gdf_engineered['year'].min()
+    max_year = gdf_engineered['year'].max()
+    select_year_slider = st.sidebar.slider('Year', min_year, max_year, (min_year, max_year))
+
+    # Filter the GeoDataFrame based on the selected year(s)
+    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]    
     
+    # Use the .explore() function from GeoPandas
+    m = selected_gdf.explore(column=select_feature_box, legend=True)
+        
     # Render the map in Streamlit
     components.html(m._repr_html_(), height=600, width=800)
 
