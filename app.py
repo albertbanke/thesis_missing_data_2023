@@ -104,7 +104,7 @@ def main():
     st.subheader('Interactive Map')
 
     # Use the .explore() function from GeoPandas
-    m = gdf_engineered.explore(column='hf_score', legend=True)  # replace 'your_column' with the column you want to plot
+    m = gdf_engineered.explore(column='ef_government', legend=True)  # replace 'your_column' with the column you want to plot
     
     # Render the map in Streamlit
     components.html(m._repr_html_(), height=600, width=800)
