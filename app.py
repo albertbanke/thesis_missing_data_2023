@@ -120,16 +120,21 @@ def main():
     select_year_slider = st.sidebar.slider('Year', min_year, max_year, (min_year, max_year))
 
     # Filter the GeoDataFrame based on the selected year(s)
-    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]    
+    selected_gdf = gdf_engineered[(gdf_engineered['year'] >= select_year_slider[0]) & (gdf_engineered['year'] <= select_year_slider[1])]
+
+    # Calculate mean for selected range of years for each geographical unit (country in this case)
+    selected_gdf = selected_gdf.groupby(['countries', 'year'], as_index=False).mean()
     
     # Add a new section for the map
     st.subheader('Interactive Map')
     
-    # Use the .explore() function from GeoPandas
-    m = selected_gdf.explore(column=select_feature_box, legend=True)
+    # Wrap the map in an expand section
+    with st.expander("Interactive Map"):
+        # Use the .explore() function from GeoPandas
+        m = selected_gdf.explore(column=select_feature_box, legend=True)
         
-    # Render the map in Streamlit
-    components.html(m._repr_html_(), height=800, width=1000)
+        # Render the map in Streamlit
+        components.html(m._repr_html_(), height=800, width=1000)
 
 if __name__ == "__main__":
     main()
