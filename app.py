@@ -28,7 +28,7 @@ for filename in filenames:
 df = pd.concat(df_list)
 
 # Load the GeoDataFrame
-gdf_engineered = gpd.read_parquet('gdf_engineered.parquet')  
+gdf_engineered = gpd.read_parquet('gdf_nonproc.parquet')  
 
 def main():
     
