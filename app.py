@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 import glob
 import geopandas as gpd
@@ -77,12 +78,6 @@ def main():
     avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
     st.plotly_chart(avg_f1_by_data_fig)
     
-    # Group by class label and calculate average binary_f1 score
-    avg_binary_f1_by_class_label = selected_df.groupby('class_label')['f1_score'].mean().reset_index()
-    avg_binary_f1_by_class_label_fig = px.bar(avg_binary_f1_by_class_label, x='class_label', y='f1_score',
-                                            title='Average Binary F1 Score per Class Label')
-    st.plotly_chart(avg_binary_f1_by_class_label_fig)
-    
     # Group by model and CV method, then calculate average macro_f1 score
     avg_f1_by_model_cv = selected_df.groupby(['model', 'cv_method'])['macro_f1'].mean().reset_index()
     avg_f1_by_model_cv_fig = px.bar(avg_f1_by_model_cv, x='model', y='macro_f1', color='cv_method', 
@@ -109,6 +104,31 @@ def main():
     # Create a bar plot of top 5 features
     fig_model_features = px.bar(top_features_counts, x='feature', y='counts', title='Top 5 Features Importance')
     st.plotly_chart(fig_model_features)
+
+    # Create a pivot table with 'model' and 'target' as index and columns respectively, and 'balanced_accuracy' as values
+    pivot = selected_df.pivot_table(values='balanced_accuracy', index='model', columns='target')
+
+    # Round off values to one decimal place
+    pivot_rounded = pivot.round(2)
+
+    # Create a heatmap using plotly
+    heatmap_fig = ff.create_annotated_heatmap(z=pivot_rounded.values, x=pivot.columns.tolist(), y=pivot.index.tolist(), colorscale='YlGnBu', 
+                                            annotation_text=pivot_rounded.values.astype(str))
+
+    # Add title
+    heatmap_fig.update_layout(title='Average Balanced Accuracy Heatmap per Model and Target')
+
+    # Render the plot
+    st.plotly_chart(heatmap_fig)
+    
+    # Create a violin plot
+    violin_fig = px.violin(selected_df, x="model", y="matthews_corr", box=True, points="all")
+
+    # Add title
+    violin_fig.update_layout(title='Model Performance Distribution', xaxis_title='Model', yaxis_title='Matthews Correlation')
+
+    # Render the plot
+    st.plotly_chart(violin_fig)
 
     # Add a new section for the map
     st.sidebar.title('Interactive Map Settings')
