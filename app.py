@@ -96,17 +96,18 @@ def main():
     st.plotly_chart(avg_f1_by_model_target_fig)
 
     # Code to count frequency of top features per model
-    top_features_cols = ['model', 'top1_feature', 'top2_feature', 'top3_feature']
-    top_features_df = selected_df[top_features_cols].melt(id_vars='model').dropna()
+    top_features_cols = ['top1_feature', 'top2_feature', 'top3_feature']
+    top_features_df = selected_df[top_features_cols].melt().dropna()
 
     # Group by top features and count their frequency
-    top_features_counts = top_features_df.value_counts().rename('counts').reset_index()
+    top_features_counts = top_features_df['value'].value_counts().reset_index()
+    top_features_counts.columns = ['feature', 'counts']
 
     # Sort features by counts in descending order and select top 5
     top_features_counts = top_features_counts.sort_values('counts', ascending=False).head(5)
 
     # Create a bar plot of top 5 features
-    fig_model_features = px.bar(top_features_counts, x='value', y='counts', title=f'Top 5 Features Importance')
+    fig_model_features = px.bar(top_features_counts, x='feature', y='counts', title='Top 5 Features Importance')
     st.plotly_chart(fig_model_features)
 
     # Add a new section for the map
@@ -117,7 +118,6 @@ def main():
 
     # Get unique years in the DataFrame
     unique_years = sorted([int(year) for year in gdf_engineered['year'].unique().tolist()])
-
 
     # Use a select box for user to select a year
     st.sidebar.title('Select a year')
