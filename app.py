@@ -65,6 +65,16 @@ def main():
     if select_class_label_box != 'All':
         selected_df = selected_df[selected_df['class_label'] == select_class_label_box]
 
+    # CSS to modify the size and color of select/deselect boxes
+    st.markdown("""
+    <style>
+        div[data-baseweb="select"] > div {
+            font-size: 12px;    # Adjust the size here
+            color: red;         # Adjust the color here
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     # Display the selected DataFrame in the app
     st.title('Data View')
 
