@@ -137,6 +137,16 @@ def main():
 
     # Render the plot
     st.plotly_chart(violin_fig)
+    
+    # Convert 'time' from seconds to minutes
+    selected_df['time'] = selected_df['time'] / 60
+
+    # Create a scatter plot of 'time' vs 'matthews_corr' with a trendline and color markers based on 'data' category
+    time_vs_matthews_fig = px.scatter(selected_df, x='time', y='matthews_corr', trendline="ols", color='data')
+    time_vs_matthews_fig.update_layout(title='Trade-off between Time and Matthews Correlation Coefficient',
+                                       xaxis_title='Time (in minutes)',
+                                       yaxis_title='Matthews Correlation Coefficient')
+    st.plotly_chart(time_vs_matthews_fig)
 
     # Add a new section for the map
     st.sidebar.title('Interactive Map Settings')
