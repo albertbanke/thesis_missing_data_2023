@@ -131,7 +131,7 @@ def main():
                                             annotation_text=pivot_rounded.values.astype(str))
 
     # Add title
-    heatmap_fig.update_layout(title=f'Average {selected_metric.capitalize()} Heatmap per Model and Target', title_x=0.5, title_font=dict(size=18))
+    heatmap_fig.update_layout(title=f'Average {selected_metric.capitalize()} Heatmap per Model and Target', title_font=dict(size=18))
 
     # Render the plot
     st.plotly_chart(heatmap_fig)
