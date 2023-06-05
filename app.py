@@ -142,28 +142,21 @@ def main():
     # Convert 'time' from seconds to minutes
     selected_df['time'] = selected_df['time'] / 60
 
-    # Create a scatter plot of 'time' vs 'matthews_corr' with colored markers based on 'data' category
-    time_vs_matthews_fig = px.scatter(selected_df, x='time', y='matthews_corr', color='model')
-    time_vs_matthews_fig.update_layout(title='Trade-off between Time and Matthews Correlation Coefficient',
-                                    yaxis_title='Matthews Correlation Coefficient')
-    time_vs_matthews_fig.update_xaxes(type="log", title_text = 'Time (in log minutes)')  # log scale for x-axis
+    # Define a list of metrics that can be plotted against 'time'
+    metrics = ['matthews_corr', 'accuracy', 'precision', 'recall', 'f1_score', 'balanced_accuracy', 'macro_f1', 'roc_auc']
 
-    # Calculate the polynomial fit (degree 2 for a curve)
-    poly_fit = np.polyfit(selected_df['time'], selected_df['matthews_corr'], 2)
+    # Create a select box for user to select a metric
+    st.sidebar.title('Select a performance metric')
+    select_metric_box = st.sidebar.selectbox('Metric', metrics)
 
-    # Get the polynomial function
-    poly_func = np.poly1d(poly_fit)
-
-    # Generate x values
-    x_poly = np.linspace(min(selected_df['time']), max(selected_df['time']), 400)
-
-    # Generate y values
-    y_poly = poly_func(x_poly)
-
-    # Add the polynomial line to the figure
-    time_vs_matthews_fig.add_trace(go.Scatter(x=x_poly, y=y_poly, mode='lines', name='Trendline'))
-
-    st.plotly_chart(time_vs_matthews_fig)
+    # Create a scatter plot of 'time' vs selected metric with colored markers based on 'model' category
+    time_vs_metric_fig = px.scatter(selected_df, x='time', y=select_metric_box, color='model')
+    time_vs_metric_fig.update_layout(title=f'Trade-off between Time and {select_metric_box}',
+                                    yaxis_title=f'{select_metric_box}',
+                                    xaxis_title='Time (minutes)')
+                                    
+    # Display the plot
+    st.plotly_chart(time_vs_metric_fig)
 
     # Add a new section for the map
     st.sidebar.title('Interactive Map Settings')
