@@ -103,15 +103,23 @@ def main():
     top_features_cols = ['top1_feature', 'top2_feature', 'top3_feature']
     top_features_df = selected_df[top_features_cols].melt().dropna()
 
+    # Slider bar to select range for 'matthews_corr'
+    min_corr, max_corr = selected_df['matthews_corr'].min(), selected_df['matthews_corr'].max()
+    st.title('Select a range for Matthews Correlation Coefficient')
+    corr_range = st.slider('Range', float(min_corr), float(max_corr), (float(min_corr), float(max_corr)))
+
+    # Filter the data based on the selected 'matthews_corr' range
+    top_features_df_filtered = top_features_df[(selected_df['matthews_corr'] >= corr_range[0]) & (selected_df['matthews_corr'] <= corr_range[1])]
+
     # Group by top features and count their frequency
-    top_features_counts = top_features_df['value'].value_counts().reset_index()
+    top_features_counts = top_features_df_filtered['value'].value_counts().reset_index()
     top_features_counts.columns = ['feature', 'counts']
 
     # Sort features by counts in descending order and select top 5
     top_features_counts = top_features_counts.sort_values('counts', ascending=False).head(5)
 
     # Create a bar plot of top 5 features
-    fig_model_features = px.bar(top_features_counts, x='feature', y='counts', title='Top 5 Features Importance')
+    fig_model_features = px.bar(top_features_counts, x='feature', y='counts', title='Top 5 Features Importance for Selected Matthews Correlation Coefficient Range')
     st.plotly_chart(fig_model_features)
 
     # Create a pivot table with 'model' and 'target' as index and columns respectively, and 'balanced_accuracy' as values
