@@ -146,15 +146,18 @@ def main():
     metrics = ['matthews_corr', 'accuracy', 'precision', 'recall', 'f1_score', 'balanced_accuracy', 'macro_f1', 'roc_auc']
 
     # Create a select box for user to select a metric
-    st.sidebar.title('Select a performance metric')
-    select_metric_box = st.sidebar.selectbox('Metric', metrics)
+    st.title('Select a performance metric')
+    select_metric_box = st.selectbox('Metric', metrics)
 
     # Create a scatter plot of 'time' vs selected metric with colored markers based on 'model' category
     time_vs_metric_fig = px.scatter(selected_df, x='time', y=select_metric_box, color='model')
     time_vs_metric_fig.update_layout(title=f'Trade-off between Time and {select_metric_box}',
                                     yaxis_title=f'{select_metric_box}',
                                     xaxis_title='Time (minutes)')
-                                    
+
+    # Make the x-axis logarithmic
+    time_vs_metric_fig.update_xaxes(type="log")
+
     # Display the plot
     st.plotly_chart(time_vs_metric_fig)
 
