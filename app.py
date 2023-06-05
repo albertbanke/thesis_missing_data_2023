@@ -143,7 +143,7 @@ def main():
     selected_df['time'] = selected_df['time'] / 60
 
     # Create a scatter plot of 'time' vs 'matthews_corr' with colored markers based on 'data' category
-    time_vs_matthews_fig = px.scatter(selected_df, x='time', y='matthews_corr', color='data')
+    time_vs_matthews_fig = px.scatter(selected_df, x='time', y='matthews_corr', color='model')
     time_vs_matthews_fig.update_layout(title='Trade-off between Time and Matthews Correlation Coefficient',
                                     yaxis_title='Matthews Correlation Coefficient')
     time_vs_matthews_fig.update_xaxes(type="log", title_text = 'Time (in log minutes)')  # log scale for x-axis
