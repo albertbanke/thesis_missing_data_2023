@@ -149,11 +149,12 @@ def main():
     st.title('Select a performance metric')
     select_metric_box = st.selectbox('Metric', metrics)
 
-    # Create a scatter plot of 'time' vs selected metric with colored markers based on 'model' category
-    time_vs_metric_fig = px.scatter(selected_df, x='time', y=select_metric_box, color='model')
+    # Create a scatter plot of 'time' vs selected metric with colored markers based on 'model' category and add trendlines
+    time_vs_metric_fig = px.scatter(selected_df, x='time', y=select_metric_box, color='model', trendline="ols")
     time_vs_metric_fig.update_layout(title=f'Trade-off between Time and {select_metric_box}',
                                     yaxis_title=f'{select_metric_box}',
-                                    xaxis_title='Time (minutes)')
+                                    xaxis_title='Time (minutes)',
+                                    title_font=dict(size=16))
 
     # Make the x-axis logarithmic
     time_vs_metric_fig.update_xaxes(type="log")
