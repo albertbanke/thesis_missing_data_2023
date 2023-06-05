@@ -122,7 +122,7 @@ def main():
     st.plotly_chart(heatmap_fig)
     
     # Create a violin plot
-    violin_fig = px.violin(selected_df, x="model", y="matthews_corr", box=True, points="all")
+    violin_fig = px.violin(selected_df, y="model", x="matthews_corr", box=True, points="all")
 
     # Add title
     violin_fig.update_layout(title='Model Performance Distribution', xaxis_title='Model', yaxis_title='Matthews Correlation')
