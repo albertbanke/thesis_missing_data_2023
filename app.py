@@ -47,12 +47,12 @@ def main():
     select_data_box = col2.selectbox('Data', ['All'] + df['data'].unique().tolist(), index=0)
 
     # Use a select box for user to select a CV method
-    st.sidebar.title('Select a CV method')
-    select_cv_box = st.sidebar.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
+    col1.title('Select a CV method')
+    select_cv_box = col1.selectbox('CV method', ['All'] + df['cv_method'].unique().tolist(), index=0)
 
     # Use a select box for user to select a class label
-    st.sidebar.title('Select a class label')
-    select_class_label_box = st.sidebar.selectbox('Class Label', ['All'] + df['class_label'].unique().tolist(), index=0)
+    col2.title('Select a class label')
+    select_class_label_box = col2.selectbox('Class Label', ['All'] + df['class_label'].unique().tolist(), index=0)
 
     # Apply selected filters to the DataFrame
     selected_df = df.copy()
