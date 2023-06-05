@@ -125,7 +125,7 @@ def main():
     violin_fig = px.violin(selected_df, y="model", x="matthews_corr", box=True, points="all")
 
     # Add title
-    violin_fig.update_layout(title='Model Performance Distribution', xaxis_title='Model', yaxis_title='Matthews Correlation')
+    violin_fig.update_layout(title='Model Performance Distribution', xaxis_title='Matthews Correlation', yaxis_title='Model')
 
     # Render the plot
     st.plotly_chart(violin_fig)
