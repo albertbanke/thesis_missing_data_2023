@@ -69,8 +69,8 @@ def main():
     st.markdown("""
     <style>
         div[data-baseweb="select"] > div {
-            font-size: 12px;    # Adjust the size here
-            color: red;         # Adjust the color here
+            font-size: 8px;    # Adjust the size here
+            color: white;         # Adjust the color here
         }
     </style>
     """, unsafe_allow_html=True)
