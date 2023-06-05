@@ -114,18 +114,24 @@ def main():
     fig_model_features = px.bar(top_features_counts, x='feature', y='counts', title='Top 5 Features Importance')
     st.plotly_chart(fig_model_features)
 
-    # Create a pivot table with 'model' and 'target' as index and columns respectively, and 'balanced_accuracy' as values
-    pivot = selected_df.pivot_table(values='balanced_accuracy', index='model', columns='target')
+    # List of available metrics 
+    available_metrics = ['balanced_accuracy', 'recall', 'macro_f1', 'matthews_corr']  # selected attributes
+
+    # Add a select box in the main area of the app 
+    selected_metric = st.selectbox('Select a metric for the heatmap', available_metrics)
+
+    # Create a pivot table with 'model' and 'target' as index and columns respectively, and the selected metric as values
+    pivot = selected_df.pivot_table(values=selected_metric, index='model', columns='target')
 
     # Round off values to one decimal place
     pivot_rounded = pivot.round(2)
-
+    
     # Create a heatmap using plotly
     heatmap_fig = ff.create_annotated_heatmap(z=pivot_rounded.values, x=pivot.columns.tolist(), y=pivot.index.tolist(), colorscale='YlGnBu', 
                                             annotation_text=pivot_rounded.values.astype(str))
 
     # Add title
-    heatmap_fig.update_layout(title='Average Balanced Accuracy Heatmap per Model and Target')
+    heatmap_fig.update_layout(title=f'Average {selected_metric.capitalize()} Heatmap per Model and Target', title_x=0.5, title_font=dict(size=18))
 
     # Render the plot
     st.plotly_chart(heatmap_fig)
