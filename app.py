@@ -66,7 +66,14 @@ def main():
         selected_df = selected_df[selected_df['class_label'] == select_class_label_box]
 
     # Display the selected DataFrame in the app
-    st.dataframe(selected_df)
+    st.title('Data View')
+
+    # Add a multi-select box for user to select/deselect columns for viewing
+    st.subheader('Select columns to display')
+    columns_to_display = st.multiselect('Columns', selected_df.columns.tolist(), default = selected_df.columns.tolist())
+
+    # Display DataFrame with selected columns
+    st.dataframe(selected_df[columns_to_display])
 
     # Group by model and calculate average macro_f1 score
     avg_f1_by_model = selected_df.groupby('model')['macro_f1'].mean().reset_index()
