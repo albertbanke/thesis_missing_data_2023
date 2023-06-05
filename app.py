@@ -67,11 +67,13 @@ def main():
 
     # Display the selected DataFrame in the app
     st.title('Data View')
-
-    # Add a multi-select box for user to select/deselect columns for viewing
-    st.subheader('Select columns to display')
-    columns_to_display = st.multiselect('Columns', selected_df.columns.tolist(), default = selected_df.columns.tolist())
-
+    
+        # Wrap the map in an expand section
+    with st.expander("Click to select columns"):
+        # Add a multi-select box for user to select/deselect columns for viewing
+        st.subheader('Select columns to display')
+        columns_to_display = st.multiselect('Columns', selected_df.columns.tolist(), default = selected_df.columns.tolist())
+        
     # Display DataFrame with selected columns
     st.dataframe(selected_df[columns_to_display])
 
