@@ -33,7 +33,7 @@ gdf_engineered = gpd.read_parquet('gdf_nonproc.parquet')
 
 def main():
     
-    st.title('Missing Data ML Modeling Results')
+    st.title('Missing Data Modeling Results')
     
     # Define two columns
     col1, col2 = st.sidebar.columns(2)
