@@ -17,7 +17,7 @@ import streamlit.components.v1 as components
 st.set_page_config(layout="wide")
 
 # Load the DataFrames
-filenames = glob.glob("data_frames/results_*.csv")
+filenames = glob.glob("results/results_*.csv")
 df_list = []
 
 # Read each file, cast 'target' to string, and append to list
