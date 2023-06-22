@@ -100,7 +100,7 @@ def main():
     st.plotly_chart(avg_f1_by_model_target_fig)
     
     # Add a slider to adjust the range of the matthews_corr
-    matthews_corr_range = st.sidebar.slider('Select Matthews Correlation Coefficient Range', 
+    matthews_corr_range = st.sidebar.slider('Select Matthews Correlation Coefficient Range (only for Top 5 features)', 
                                             min_value=float(selected_df['matthews_corr'].min()), 
                                             max_value=float(selected_df['matthews_corr'].max()), 
                                             value=(float(selected_df['matthews_corr'].min()), float(selected_df['matthews_corr'].max())))
