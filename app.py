@@ -98,6 +98,15 @@ def main():
     avg_f1_by_model_target_fig = px.bar(avg_f1_by_model_target, x='model', y='macro_f1', color='target',
                                         barmode='group', title='Average Macro F1 Score per Model and Target')
     st.plotly_chart(avg_f1_by_model_target_fig)
+    
+    # Add a slider to adjust the range of the matthews_corr
+    matthews_corr_range = st.sidebar.slider('Select Matthews Correlation Coefficient Range', 
+                                            min_value=float(selected_df['matthews_corr'].min()), 
+                                            max_value=float(selected_df['matthews_corr'].max()), 
+                                            value=(float(selected_df['matthews_corr'].min()), float(selected_df['matthews_corr'].max())))
+
+    # Filter the DataFrame according to the selected matthews_corr range
+    selected_df = selected_df[(selected_df['matthews_corr'] >= matthews_corr_range[0]) & (selected_df['matthews_corr'] <= matthews_corr_range[1])]
 
     # Code to count frequency of top features per model
     top_features_cols = ['top1_feature', 'top2_feature', 'top3_feature']
