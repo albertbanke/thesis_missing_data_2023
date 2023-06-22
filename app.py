@@ -78,8 +78,8 @@ def main():
     st.dataframe(selected_df[columns_to_display])
     
     # Group by data type and calculate average macro_f1 score
-    avg_f1_by_data = selected_df.groupby('data')['macro_f1'].mean().reset_index()
-    avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='macro_f1', title='Average Macro F1 Score per Data Type')
+    avg_f1_by_data = selected_df.groupby('data')['matthews_corr'].mean().reset_index()
+    avg_f1_by_data_fig = px.bar(avg_f1_by_data, x='data', y='matthews_corr', title='Average Matthews Correlation Coefficient per Data Type')
     st.plotly_chart(avg_f1_by_data_fig)
 
     # Group by model and calculate average macro_f1 score
