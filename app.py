@@ -11,26 +11,18 @@ import geopandas as gpd
 import matplotlib
 import mapclassify
 from datetime import datetime
-import requests
-import io
 import streamlit.components.v1 as components
 
 # Set page layout
 st.set_page_config(layout="wide")
 
-# Base URL for the raw GitHub content
-base_url = "https://github.com/albertbanke/thesis_missing_data_2023/tree/main/results"
-
-# List of filenames (add as many as needed)
-filenames = ['results_imputed.csv', 'results_pure.csv', 'results_spatial.csv']  # Replace with actual filenames
-
+# Load the DataFrames
+filenames = glob.glob("results/results_*.csv")
 df_list = []
 
-# Load each file from GitHub
+# Read each file, cast 'target' to string, and append to list
 for filename in filenames:
-    url = base_url + filename
-    content = requests.get(url).content
-    df_temp = pd.read_csv(io.StringIO(content.decode('utf-8')))
+    df_temp = pd.read_csv(filename)
     df_temp['target'] = df_temp['target'].astype(str)
     df_list.append(df_temp)
 
@@ -38,7 +30,7 @@ for filename in filenames:
 df = pd.concat(df_list)
 
 # Load the GeoDataFrame
-gdf_engineered = gpd.read_parquet('gdf_nonproc.parquet')  
+gdf_engineered = gpd.read_parquet('data_frames/gdf_nonproc.parquet')  
 
 def main():
     
